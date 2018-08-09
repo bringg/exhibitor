@@ -16,10 +16,10 @@
 
 package com.netflix.exhibitor.core.automanage;
 
-import com.sun.jersey.api.client.WebResource;
-import javax.ws.rs.core.MediaType;
 import java.io.Closeable;
 import java.net.URI;
+
+import javax.ws.rs.core.MediaType;
 
 public interface RemoteInstanceRequestClient extends Closeable
 {
