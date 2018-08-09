@@ -4,7 +4,7 @@
 
     <groupId>io.soabase.exhibitor</groupId>
     <artifactId>exhibitor</artifactId>
-    <version>1.7.2-SNAPSHOT</version>
+    <version>1.7.1-1</version>
     <packaging>pom</packaging>
 
     <modules>
@@ -17,7 +17,7 @@
         <project.build.resourceEncoding>UTF-8</project.build.resourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 
-        <jdk-version>1.6</jdk-version>
+        <jdk-version>1.8</jdk-version>
 
         <maven-compiler-plugin-version>3.5.1</maven-compiler-plugin-version>
         <maven-shade-plugin-version>2.4.3</maven-shade-plugin-version>
@@ -46,8 +46,8 @@
         <mockito-version>1.8.5</mockito-version>
         <zookeeper-version>3.4.5</zookeeper-version>
         <jsr166-version>1.7.0</jsr166-version>
-        <consul-version>0.14.0</consul-version>
-        <embedded-consul-version>0.3.1</embedded-consul-version>
+        <consul-version>0.16.2</consul-version>
+        <embedded-consul-version>1.1.1</embedded-consul-version>
     </properties>
 
     <name>Exhibitor</name>
@@ -93,7 +93,7 @@
         <connection>scm:git:https://github.com/soabase/exhibitor.git</connection>
         <developerConnection>scm:git:git@github.com:soabase/exhibitor.git</developerConnection>
       <tag>HEAD</tag>
-  </scm>
+    </scm>
 
     <issueManagement>
         <system>Github</system>
