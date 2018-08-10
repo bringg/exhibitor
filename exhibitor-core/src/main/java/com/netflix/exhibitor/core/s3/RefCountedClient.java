@@ -16,8 +16,6 @@
 
 package com.netflix.exhibitor.core.s3;
 
-import com.amazonaws.services.s3.AmazonS3Client;
-import com.google.common.util.concurrent.ThreadFactoryBuilder;
 import java.util.concurrent.DelayQueue;
 import java.util.concurrent.Delayed;
 import java.util.concurrent.ExecutorService;
@@ -26,13 +24,16 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 
+import com.amazonaws.services.s3.AmazonS3;
+import com.google.common.util.concurrent.ThreadFactoryBuilder;
+
 class RefCountedClient
 {
     private static final int            SHUTDOWN_DELAY_MS = Integer.getInteger("RefCountedClientDelayMs", 60 * 1000); // 1 minute default
 
     private static class ToBeShutdown implements Delayed
     {
-        private final AmazonS3Client        client;
+        private final AmazonS3        client;
         private final long                  endTimeMs = System.currentTimeMillis() + SHUTDOWN_DELAY_MS;
 
         @Override
@@ -48,7 +49,7 @@ class RefCountedClient
             return (diff < 0) ? -1 : ((diff > 0) ? 1 : 0);
         }
 
-        private ToBeShutdown(AmazonS3Client client)
+        private ToBeShutdown(AmazonS3 client)
         {
             this.client = client;
         }
@@ -82,15 +83,15 @@ class RefCountedClient
     }
 
     private final AtomicBoolean markedForDelete = new AtomicBoolean(false);
-    private final AmazonS3Client client;
+    private final AmazonS3 client;
     private final AtomicInteger useCount = new AtomicInteger(0);
 
-    RefCountedClient(AmazonS3Client client)
+    RefCountedClient(AmazonS3 client)
     {
         this.client = client;
     }
 
-    AmazonS3Client useClient()
+    AmazonS3 useClient()
     {
         useCount.incrementAndGet();
         return client;

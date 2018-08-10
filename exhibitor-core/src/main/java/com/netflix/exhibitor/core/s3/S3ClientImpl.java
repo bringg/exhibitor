@@ -17,9 +17,11 @@
 package com.netflix.exhibitor.core.s3;
 
 import com.amazonaws.auth.AWSCredentialsProvider;
+import com.amazonaws.auth.AWSStaticCredentialsProvider;
 import com.amazonaws.auth.BasicAWSCredentials;
 import com.amazonaws.regions.RegionUtils;
-import com.amazonaws.services.s3.AmazonS3Client;
+import com.amazonaws.services.s3.AmazonS3;
+import com.amazonaws.services.s3.AmazonS3ClientBuilder;
 import com.amazonaws.services.s3.model.*;
 
 import org.slf4j.Logger;
@@ -97,7 +99,7 @@ public class S3ClientImpl implements S3Client
     public InitiateMultipartUploadResult initiateMultipartUpload(InitiateMultipartUploadRequest request) throws Exception
     {
         RefCountedClient holder = client.get();
-        AmazonS3Client amazonS3Client = holder.useClient();
+        AmazonS3 amazonS3Client = holder.useClient();
         try
         {
             return amazonS3Client.initiateMultipartUpload(request);
@@ -112,7 +114,7 @@ public class S3ClientImpl implements S3Client
     public PutObjectResult putObject(PutObjectRequest request) throws Exception
     {
         RefCountedClient holder = client.get();
-        AmazonS3Client amazonS3Client = holder.useClient();
+        AmazonS3 amazonS3Client = holder.useClient();
         try
         {
             return amazonS3Client.putObject(request);
@@ -127,7 +129,7 @@ public class S3ClientImpl implements S3Client
     public S3Object getObject(String bucket, String key) throws Exception
     {
         RefCountedClient holder = client.get();
-        AmazonS3Client amazonS3Client = holder.useClient();
+        AmazonS3 amazonS3Client = holder.useClient();
         try
         {
             return amazonS3Client.getObject(bucket, key);
@@ -142,7 +144,7 @@ public class S3ClientImpl implements S3Client
     public ObjectMetadata getObjectMetadata(String bucket, String key) throws Exception
     {
         RefCountedClient holder = client.get();
-        AmazonS3Client amazonS3Client = holder.useClient();
+        AmazonS3 amazonS3Client = holder.useClient();
         try
         {
             return amazonS3Client.getObjectMetadata(bucket, key);
@@ -157,7 +159,7 @@ public class S3ClientImpl implements S3Client
     public ObjectListing listObjects(ListObjectsRequest request) throws Exception
     {
         RefCountedClient    holder = client.get();
-        AmazonS3Client      amazonS3Client = holder.useClient();
+        AmazonS3      amazonS3Client = holder.useClient();
         try
         {
             return amazonS3Client.listObjects(request);
@@ -172,7 +174,7 @@ public class S3ClientImpl implements S3Client
     public ObjectListing listNextBatchOfObjects(ObjectListing previousObjectListing) throws Exception
     {
         RefCountedClient holder = client.get();
-        AmazonS3Client amazonS3Client = holder.useClient();
+        AmazonS3 amazonS3Client = holder.useClient();
         try
         {
             return amazonS3Client.listNextBatchOfObjects(previousObjectListing);
@@ -187,7 +189,7 @@ public class S3ClientImpl implements S3Client
     public void deleteObject(String bucket, String key) throws Exception
     {
         RefCountedClient holder = client.get();
-        AmazonS3Client amazonS3Client = holder.useClient();
+        AmazonS3 amazonS3Client = holder.useClient();
         try
         {
             amazonS3Client.deleteObject(bucket, key);
@@ -202,7 +204,7 @@ public class S3ClientImpl implements S3Client
     public UploadPartResult uploadPart(UploadPartRequest request) throws Exception
     {
         RefCountedClient holder = client.get();
-        AmazonS3Client amazonS3Client = holder.useClient();
+        AmazonS3 amazonS3Client = holder.useClient();
         try
         {
             return amazonS3Client.uploadPart(request);
@@ -217,7 +219,7 @@ public class S3ClientImpl implements S3Client
     public void completeMultipartUpload(CompleteMultipartUploadRequest request) throws Exception
     {
         RefCountedClient holder = client.get();
-        AmazonS3Client amazonS3Client = holder.useClient();
+        AmazonS3 amazonS3Client = holder.useClient();
         try
         {
             amazonS3Client.completeMultipartUpload(request);
@@ -232,7 +234,7 @@ public class S3ClientImpl implements S3Client
     public void abortMultipartUpload(AbortMultipartUploadRequest request) throws Exception
     {
         RefCountedClient holder = client.get();
-        AmazonS3Client amazonS3Client = holder.useClient();
+        AmazonS3 amazonS3Client = holder.useClient();
         try
         {
             amazonS3Client.abortMultipartUpload(request);
@@ -243,9 +245,9 @@ public class S3ClientImpl implements S3Client
         }
     }
 
-    private AmazonS3Client createClient(AWSCredentialsProvider awsCredentialProvider, BasicAWSCredentials basicAWSCredentials, S3ClientConfig clientConfig)
+    private AmazonS3 createClient(AWSCredentialsProvider awsCredentialProvider, BasicAWSCredentials basicAWSCredentials, S3ClientConfig clientConfig)
     {
-        AmazonS3Client localClient;
+        AmazonS3 localClient;
 
         // Setting endpoint property will always supersede region setting.
         String endpoint = System.getProperty("exhibitor-s3-endpoint");
@@ -254,33 +256,34 @@ public class S3ClientImpl implements S3Client
         {
             if ( clientConfig != null )
             {
-                localClient = new AmazonS3Client(awsCredentialProvider, clientConfig.getAWSClientConfig());
+                localClient = AmazonS3ClientBuilder.standard().withCredentials(awsCredentialProvider).withClientConfiguration(clientConfig.getAWSClientConfig()).build();
+                
             }
             else
             {
-                localClient = new AmazonS3Client(awsCredentialProvider);
+                localClient = AmazonS3ClientBuilder.standard().withCredentials(awsCredentialProvider).build();
             }
         }
         else if ( basicAWSCredentials != null )
         {
             if ( clientConfig != null )
             {
-                localClient = new AmazonS3Client(basicAWSCredentials, clientConfig.getAWSClientConfig());
+                localClient = AmazonS3ClientBuilder.standard().withCredentials(new AWSStaticCredentialsProvider(basicAWSCredentials)).withClientConfiguration(clientConfig.getAWSClientConfig()).build();
             }
             else
             {
-                localClient = new AmazonS3Client(basicAWSCredentials);
+                localClient = AmazonS3ClientBuilder.standard().withCredentials(new AWSStaticCredentialsProvider(basicAWSCredentials)).build();
             }
         }
         else
         {
             if ( clientConfig != null )
             {
-                localClient = new AmazonS3Client(clientConfig.getAWSClientConfig());
+                localClient = AmazonS3ClientBuilder.standard().withClientConfiguration(clientConfig.getAWSClientConfig()).build();
             }
             else
             {
-                localClient = new AmazonS3Client();
+                localClient = AmazonS3ClientBuilder.defaultClient();
             }
         }
 
