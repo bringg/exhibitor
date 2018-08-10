@@ -63,7 +63,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 
 public class ExhibitorMain implements Closeable
 {
-    private final Logger log = LoggerFactory.getLogger(getClass());
+    private static final Logger log = LoggerFactory.getLogger(ExhibitorMain.class);
     private final Server server;
     private final AtomicBoolean isClosed = new AtomicBoolean(false);
     private final Exhibitor exhibitor;
@@ -132,7 +132,7 @@ public class ExhibitorMain implements Closeable
             addRemoteAuth(builder, securityArguments.getRemoteAuthSpec());
         }
 
-        builder.shutdownProc(makeShutdownProc(this));
+        builder.shutdownProc(makeShutdownProc(this, null));
         exhibitor = new Exhibitor(configProvider, null, backupProvider, builder.build());
         exhibitor.start();
 
@@ -268,6 +268,7 @@ public class ExhibitorMain implements Closeable
         }
         catch ( InterruptedException e )
         {
+        	log.debug("Interrupt server waiting");
             Thread.currentThread().interrupt();
         }
     }
@@ -294,23 +295,32 @@ public class ExhibitorMain implements Closeable
 
     private static void setShutdown(final ExhibitorMain exhibitorMain)
     {
+    	log.info("Add shutdown hook for stop signal");
+    	final Thread currentThread = Thread.currentThread();
         Runtime.getRuntime().addShutdownHook
         (
             new Thread
             (
-                makeShutdownProc(exhibitorMain)
+                makeShutdownProc(exhibitorMain,currentThread)
             )
         );
     }
 
-    private static Runnable makeShutdownProc(final ExhibitorMain exhibitorMain)
+    private static Runnable makeShutdownProc(final ExhibitorMain exhibitorMain,final Thread currentThread)
     {
         return new Runnable()
         {
             @Override
             public void run()
             {
+                log.info("Receive stop signal");
                 exhibitorMain.shutdownSignaled.set(true);
+                if (currentThread != null){
+                    try {
+                        currentThread.join();
+                    }
+                    catch ( InterruptedException e ){}
+                }
             }
         };
     }
