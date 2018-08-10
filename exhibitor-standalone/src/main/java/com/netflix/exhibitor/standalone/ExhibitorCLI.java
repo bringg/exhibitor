@@ -268,7 +268,8 @@ public class ExhibitorCLI
         }
     }
 
-    private void logOptions(String sectionName, String prefix, Options options)
+    @SuppressWarnings("unchecked")
+	private void logOptions(String sectionName, String prefix, Options options)
     {
         if ( sectionName != null )
         {
@@ -309,7 +310,8 @@ public class ExhibitorCLI
         return Joiner.on(", ").join(transformed);
     }
 
-    private void addAll(String sectionName, Options adding)
+    @SuppressWarnings("unchecked")
+	private void addAll(String sectionName, Options adding)
     {
         //noinspection unchecked
         for ( Option o : (Iterable<? extends Option>)adding.getOptions() )
