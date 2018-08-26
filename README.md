@@ -1,4 +1,3 @@
-[![Build Status](https://travis-ci.org/soabase/exhibitor.svg?branch=master)](https://travis-ci.org/soabase/exhibitor) [![Join the chat at https://gitter.im/soabase/exhibitor](https://badges.gitter.im/soabase/exhibitor.svg)](https://gitter.im/soabase/exhibitor?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
 # IMPORTANT NOTE
 
@@ -16,6 +15,13 @@ Please see the doc at https://github.com/Netflix/exhibitor/wiki
 
 Exhibitor is built via Maven (https://maven.apache.org/).  
 To build do `mvn install`.
+
+- Standalone version can  be built as fat jar with all dependencies.
+
+  Maven and Gradle build scripts are available [here](https://github.com/Fulups/exhibitor/tree/master/exhibitor-standalone/src/main/resources/buildscripts/standalone) and is explain on [standalone build page](https://github.com/soabase/exhibitor/wiki/Building-Exhibitor).
+
+- War version can be build with Maven script available [here](https://github.com/Fulups/exhibitor/tree/master/exhibitor-standalone/src/main/resources/buildscripts/war/maven) and is explain on [war build page](https://github.com/soabase/exhibitor/wiki/Building-A-WAR-File).
+
 
 ## ARTIFACTS
 
