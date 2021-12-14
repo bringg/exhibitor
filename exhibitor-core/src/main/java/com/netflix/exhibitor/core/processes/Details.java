@@ -37,6 +37,7 @@ class Details
 {
     final File zooKeeperDirectory;
     final File dataDirectory;
+    final File libDirectory;
     final File logDirectory;
     final File configDirectory;
     final String logPaths;
@@ -50,12 +51,13 @@ class Details
         this.zooKeeperDirectory = getZooKeeperDirectory(config);
         this.dataDirectory = new File(config.getString(StringConfigs.ZOOKEEPER_DATA_DIRECTORY));
 
-        String      logDirectory = config.getString(StringConfigs.ZOOKEEPER_LOG_DIRECTORY);
+        String logDirectory = config.getString(StringConfigs.ZOOKEEPER_LOG_DIRECTORY);
         this.logDirectory = (logDirectory.trim().length() > 0) ? new File(logDirectory) : this.dataDirectory;
 
+        libDirectory = new File(zooKeeperDirectory, "lib");
         configDirectory = new File(zooKeeperDirectory, "conf");
-        logPaths = findJar(new File(zooKeeperDirectory, "lib"), "(.*log4j.*)|(.*slf4j.*)");
-        zooKeeperJarPath = findJar(this.zooKeeperDirectory, "zookeeper.*");
+        logPaths = findJar(libDirectory, "(.*log4j.*)|(.*slf4j.*)");
+        zooKeeperJarPath = findJar(libDirectory, "zookeeper.*");
 
         properties = new Properties();
         if ( isValid() )
