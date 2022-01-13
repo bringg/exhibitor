@@ -40,8 +40,6 @@ class Details
     final File libDirectory;
     final File logDirectory;
     final File configDirectory;
-    final String logPaths;
-    final String zooKeeperJarPath;
     final Properties properties;
 
     Details(Exhibitor exhibitor) throws IOException
@@ -56,8 +54,6 @@ class Details
 
         libDirectory = new File(zooKeeperDirectory, "lib");
         configDirectory = new File(zooKeeperDirectory, "conf");
-        logPaths = findJar(libDirectory, "(.*log4j.*)|(.*slf4j.*)");
-        zooKeeperJarPath = findJar(libDirectory, "zookeeper.*");
 
         properties = new Properties();
         if ( isValid() )
@@ -120,45 +116,5 @@ class Details
     private boolean isValidPath(File directory)
     {
         return directory.getPath().length() > 0;
-    }
-
-    private String findJar(File dir, String regex) throws IOException
-    {
-        if ( !isValid() )
-        {
-            return "";
-        }
-
-        final Pattern pattern = Pattern.compile(regex);
-        File[]          files = dir.listFiles
-            (
-                new FileFilter()
-                {
-                    @Override
-                    public boolean accept(File f)
-                    {
-                        return pattern.matcher(f.getName()).matches() && f.getName().endsWith(".jar");
-                    }
-                }
-            );
-
-        if ( (files == null) || (files.length == 0) )
-        {
-            throw new IOException("Could not find " + regex + " jar in directory " + dir.getAbsolutePath());
-        }
-
-        Iterable<String> transformed = Iterables.transform
-            (
-                Arrays.asList(files),
-                new Function<File, String>()
-                {
-                    @Override
-                    public String apply(File f)
-                    {
-                        return f.getPath();
-                    }
-                }
-            );
-        return Joiner.on(':').join(transformed);
     }
 }
