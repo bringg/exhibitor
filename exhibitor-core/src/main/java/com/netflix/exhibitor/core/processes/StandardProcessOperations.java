@@ -153,6 +153,10 @@ public class StandardProcessOperations implements ProcessOperations
         Properties      localProperties = new Properties();
         localProperties.putAll(details.properties);
 
+        // those are required for exhibitor to work with ZK 3.5+
+        localProperties.setProperty("4lw.commands.whitelist", "*");
+        localProperties.setProperty("admin.enableServer", "false");
+
         localProperties.setProperty("clientPort", Integer.toString(usState.getConfig().getInt(IntConfigs.CLIENT_PORT)));
 
         String          portSpec = String.format(":%d:%d", usState.getConfig().getInt(IntConfigs.CONNECT_PORT), usState.getConfig().getInt(IntConfigs.ELECTION_PORT));
