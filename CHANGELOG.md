@@ -40,7 +40,7 @@ i.e. http://localhost:8080 will now redirect to http://localhost:8080/exhibitor/
 
 * Issue 201: Need to set peerType=observer for Observers
 
-* Issue 191: S3ClientImpl does not pass internet proxy server configuration to AmazonS3Client. 
+* Issue 191: S3ClientImpl does not pass internet proxy server configuration to AmazonS3Client.
 Thank you to user boldfield.
 
 * Pull 216: Change restart behavior. An addition of an observer no longer causes all instances to restart.
@@ -54,12 +54,12 @@ Thank you to user boldfield.
 * Pull 175: Use zkServer.sh to stop zookeeper to ensure that zookeeper_server.pid. Thank you to user
 ahanwadi.
 
-* Make it easier to add interactive tabs to the Exhibitor UI. This adds an option to custom tabs to 
+* Make it easier to add interactive tabs to the Exhibitor UI. This adds an option to custom tabs to
 not get rebuilt on each poll. i.e. the tab is built once and left alone.
 
-* Pull 177:  Rolling config change was very broken. ConfigCollectionBase was not processing rolling 
-config correctly in getConfigForThisInstance(). Also, when a rolling config change is started, the 
-instance must wait until it restarts at least once before advancing. Lastly, a test case to validate this 
+* Pull 177:  Rolling config change was very broken. ConfigCollectionBase was not processing rolling
+config correctly in getConfigForThisInstance(). Also, when a rolling config change is started, the
+instance must wait until it restarts at least once before advancing. Lastly, a test case to validate this
 was written.
 
 * Pull 180: Monitor stdout when cleaning logs. Thanks to user jorgeortiz85.
@@ -87,7 +87,7 @@ This new feature (on the config page) allows automatic instance management to us
 config change or all at once.
 
 * New feature: instead of sizing the ensemble up and down depending on instances coming and going,
-you can now set a fixed ensemble size (on the config page). Exhibitor will try to maintain that 
+you can now set a fixed ensemble size (on the config page). Exhibitor will try to maintain that
 ensemble size.
 
 1.4.10 - July 15, 2013
