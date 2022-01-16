@@ -4,6 +4,7 @@
 
 * First release since forking from [soabase/exhibitor](https://github.com/soabase/exhibitor)
 * [PR1](https://github.com/bringg/exhibitor/pull/1): Support Zookeeper 3.5 and up
+* [PR2](https://github.com/bringg/exhibitor/pull/2): Add docker related files
 
 ## 1.7.1-2 - August 2018
 
