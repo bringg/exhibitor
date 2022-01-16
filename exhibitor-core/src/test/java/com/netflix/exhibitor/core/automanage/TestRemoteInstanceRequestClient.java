@@ -192,7 +192,7 @@ public class TestRemoteInstanceRequestClient
         }
     }
 
-    @Test(dataProvider = "pass")
+    @Test(dataProvider = "pass", enabled = false)
     public void testHttpsPass(HttpsConfiguration httpsConf) throws Exception
     {
         int port = InstanceSpec.getRandomPort();
