@@ -6,7 +6,7 @@ Please read below for all the `docker` related options
 
 The container expects the following environment variables to be passed in:
 
-| ENV variable | Description |  Default |
+| ENV variable | Description | Required |
 |---|---|---|
 | `HOSTNAME` | addressable hostname for this node (Exhibitor will forward users of the UI to this address) | **yes**
 | `GS_BUCKET` | bucket used by Exhibitor for backups and coordination | no

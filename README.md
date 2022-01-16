@@ -1,23 +1,21 @@
 
-# IMPORTANT NOTE
-
-Exhibitor is now on its own! PLEASE READ THIS NOTE: <https://groups.google.com/forum/#!topic/exhibitor-users/PVkcd88mk8c>
-
-## DESCRIPTION
+# Exhibitor
 
 Exhibitor is a supervisor system for Apache ZooKeeper (<http://zookeeper.apache.org>).
 
 ## DETAILS
 
-Please see the doc at <https://github.com/Netflix/exhibitor/wiki>
+Please see the docs at <https://github.com/soabase/exhibitor/wiki>
+
+> **TODO**: migrate to [docs](docs) directory.
 
 ## BUILDING
 
 Exhibitor is built via Maven (<https://maven.apache.org>).
 To build do `mvn install`.
 
-- Standalone version can  be built as fat jar with all dependencies. Maven and Gradle build scripts are available [here](https://github.com/Fulups/exhibitor/tree/master/exhibitor-standalone/src/main/resources/buildscripts/standalone) and is explain on [standalone build page](https://github.com/soabase/exhibitor/wiki/Building-Exhibitor).
-- War version can be build with Maven script available [here](https://github.com/Fulups/exhibitor/tree/master/exhibitor-standalone/src/main/resources/buildscripts/war/maven) and is explain on [war build page](https://github.com/soabase/exhibitor/wiki/Building-A-WAR-File).
+- Standalone version can  be built as fat jar with all dependencies. Maven and Gradle build scripts are available [here](https://github.com/bringg/exhibitor/tree/master/exhibitor-standalone/src/main/resources/buildscripts/standalone) and is explain on [standalone build page](https://github.com/soabase/exhibitor/wiki/Building-Exhibitor).
+- War version can be build with Maven script available [here](https://github.com/bringg/exhibitor/tree/master/exhibitor-standalone/src/main/resources/buildscripts/war/maven) and is explain on [war build page](https://github.com/soabase/exhibitor/wiki/Building-A-WAR-File).
 
 ## ARTIFACTS
 
