@@ -37,10 +37,9 @@ class Details
 {
     final File zooKeeperDirectory;
     final File dataDirectory;
+    final File libDirectory;
     final File logDirectory;
     final File configDirectory;
-    final String logPaths;
-    final String zooKeeperJarPath;
     final Properties properties;
 
     Details(Exhibitor exhibitor) throws IOException
@@ -50,12 +49,11 @@ class Details
         this.zooKeeperDirectory = getZooKeeperDirectory(config);
         this.dataDirectory = new File(config.getString(StringConfigs.ZOOKEEPER_DATA_DIRECTORY));
 
-        String      logDirectory = config.getString(StringConfigs.ZOOKEEPER_LOG_DIRECTORY);
+        String logDirectory = config.getString(StringConfigs.ZOOKEEPER_LOG_DIRECTORY);
         this.logDirectory = (logDirectory.trim().length() > 0) ? new File(logDirectory) : this.dataDirectory;
 
+        libDirectory = new File(zooKeeperDirectory, "lib");
         configDirectory = new File(zooKeeperDirectory, "conf");
-        logPaths = findJar(new File(zooKeeperDirectory, "lib"), "(.*log4j.*)|(.*slf4j.*)");
-        zooKeeperJarPath = findJar(this.zooKeeperDirectory, "zookeeper.*");
 
         properties = new Properties();
         if ( isValid() )
@@ -118,45 +116,5 @@ class Details
     private boolean isValidPath(File directory)
     {
         return directory.getPath().length() > 0;
-    }
-
-    private String findJar(File dir, String regex) throws IOException
-    {
-        if ( !isValid() )
-        {
-            return "";
-        }
-
-        final Pattern pattern = Pattern.compile(regex);
-        File[]          files = dir.listFiles
-            (
-                new FileFilter()
-                {
-                    @Override
-                    public boolean accept(File f)
-                    {
-                        return pattern.matcher(f.getName()).matches() && f.getName().endsWith(".jar");
-                    }
-                }
-            );
-
-        if ( (files == null) || (files.length == 0) )
-        {
-            throw new IOException("Could not find " + regex + " jar in directory " + dir.getAbsolutePath());
-        }
-
-        Iterable<String> transformed = Iterables.transform
-            (
-                Arrays.asList(files),
-                new Function<File, String>()
-                {
-                    @Override
-                    public String apply(File f)
-                    {
-                        return f.getPath();
-                    }
-                }
-            );
-        return Joiner.on(':').join(transformed);
     }
 }

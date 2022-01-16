@@ -4,7 +4,7 @@
 
     <groupId>io.soabase.exhibitor</groupId>
     <artifactId>exhibitor</artifactId>
-    <version>1.7.1-2</version>
+    <version>1.7.3</version>
     <packaging>pom</packaging>
 
     <modules>

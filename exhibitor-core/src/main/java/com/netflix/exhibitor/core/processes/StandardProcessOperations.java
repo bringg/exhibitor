@@ -62,13 +62,16 @@ public class StandardProcessOperations implements ProcessOperations
         (
             "java",
             "-cp",
-            String.format("%s:%s:%s", details.zooKeeperJarPath, details.logPaths, details.configDirectory.getPath()),
+            String.format("%s/*:%s", details.libDirectory.getPath(), details.configDirectory.getPath()),
             "org.apache.zookeeper.server.PurgeTxnLog",
             details.logDirectory.getPath(),
             details.dataDirectory.getPath(),
             "-n",
             Integer.toString(exhibitor.getConfigManager().getConfig().getInt(IntConfigs.CLEANUP_MAX_FILES))
         );
+
+
+        exhibitor.getLog().add(ActivityLog.Type.INFO, "Executing Cleanup task: " + builder.command().toString());
 
         exhibitor.getProcessMonitor().monitor(ProcessTypes.CLEANUP, builder.start(), "Cleanup task completed", ProcessMonitor.Mode.DESTROY_ON_INTERRUPT, ProcessMonitor.Streams.BOTH);
     }
@@ -149,6 +152,10 @@ public class StandardProcessOperations implements ProcessOperations
 
         Properties      localProperties = new Properties();
         localProperties.putAll(details.properties);
+
+        // those are required for exhibitor to work with ZK 3.5+
+        localProperties.setProperty("4lw.commands.whitelist", "*");
+        localProperties.setProperty("admin.enableServer", "false");
 
         localProperties.setProperty("clientPort", Integer.toString(usState.getConfig().getInt(IntConfigs.CLIENT_PORT)));
 
