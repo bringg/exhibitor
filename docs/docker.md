@@ -1,6 +1,6 @@
 # Docker
 
-Please read beow for all the `docker` related options
+Please read below for all the `docker` related options
 
 ## Usage
 
