@@ -9,8 +9,8 @@ FROM maven:3.6-alpine as builder
 WORKDIR /exhibitor
 COPY . .
 
-RUN mvn -DskipTests=true install \
-    && mvn -nsu -f exhibitor-standalone/src/main/resources/buildscripts/standalone/maven/pom.xml package
+RUN mvn -B -DskipTests=true install \
+    && mvn -B -nsu -f exhibitor-standalone/src/main/resources/buildscripts/standalone/maven/pom.xml package
 
 FROM openjdk:8-jdk-alpine
 LABEL maintainer "Bringg DevOps <devops@bringg.com>"
