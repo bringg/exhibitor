@@ -274,6 +274,11 @@ public class BackupManager implements Closeable
                         break;
                     }
 
+                    case DUPLICATE: {
+                        // ignore
+                        break;
+                    }
+
                     case REPLACED_OLD_VERSION: {
                         exhibitor.getLog().add(ActivityLog.Type.DEBUG, "Updated back up for: " + f);
                         break;
