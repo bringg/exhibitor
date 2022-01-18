@@ -13,7 +13,7 @@ apply plugin: 'com.github.johnrengelman.shadow'
 
 group = 'exhibitor'
 archivesBaseName = 'exhibitor'
-version = '1.7.3'
+version = '1.7.4'
 
 repositories {
     jcenter()
@@ -24,7 +24,7 @@ repositories {
 }
 
 dependencies {
-    compile 'io.soabase.exhibitor:exhibitor-standalone:1.7.3'
+    compile 'io.soabase.exhibitor:exhibitor-standalone:1.7.4'
 }
 
 jar {
