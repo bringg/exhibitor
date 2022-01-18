@@ -1,0 +1,6 @@
+# Build output directies
+**/target
+**/build
+
+# Ingoring this can help with buiild when layers are cached
+Dockerfile
