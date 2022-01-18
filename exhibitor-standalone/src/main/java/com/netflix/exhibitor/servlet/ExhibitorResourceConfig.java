@@ -139,19 +139,19 @@ public class ExhibitorResourceConfig extends ResourceConfig
     }
 
     @Override
-    public List getContainerRequestFilters()
+    public List<?> getContainerRequestFilters()
     {
         return config.getContainerRequestFilters();
     }
 
     @Override
-    public List getContainerResponseFilters()
+    public List<?> getContainerResponseFilters()
     {
         return config.getContainerResponseFilters();
     }
 
     @Override
-    public List getResourceFilterFactories()
+    public List<?> getResourceFilterFactories()
     {
         return config.getResourceFilterFactories();
     }

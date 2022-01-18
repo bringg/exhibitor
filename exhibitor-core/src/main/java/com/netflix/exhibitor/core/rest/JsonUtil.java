@@ -16,7 +16,7 @@
 
 package com.netflix.exhibitor.core.rest;
 
-import org.codehaus.jackson.map.ObjectMapper;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.IOException;
 import java.io.StringWriter;
 
@@ -28,7 +28,7 @@ class JsonUtil
         {
             ObjectMapper mapper = new ObjectMapper();
             StringWriter str = new StringWriter();
-            mapper.getJsonFactory().createJsonGenerator(str).writeObject(obj);
+            mapper.getFactory().createGenerator(str).writeObject(obj);
             return str.toString();
         }
         catch ( IOException e )

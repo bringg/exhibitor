@@ -197,7 +197,7 @@ public class TestExhibitorEnsembleProvider extends BaseClassForTests
     @Test
     public void     testSimple() throws Exception
     {
-        //TestingServer               server = new TestingServer();
+        TestingServer               server = new TestingServer();
         Exhibitors                  exhibitors = new Exhibitors(Lists.newArrayList("foo", "bar"), 1000, dummyConnectionStringProvider);
         ExhibitorRestClient         mockRestClient = new ExhibitorRestClient()
         {

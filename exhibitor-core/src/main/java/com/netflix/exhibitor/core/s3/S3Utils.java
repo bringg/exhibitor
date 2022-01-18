@@ -21,7 +21,6 @@ import com.amazonaws.services.s3.model.PutObjectRequest;
 import com.amazonaws.services.s3.model.PutObjectResult;
 import org.apache.commons.codec.binary.Base64;
 import java.io.ByteArrayInputStream;
-import java.io.File;
 import java.security.MessageDigest;
 import java.util.Date;
 

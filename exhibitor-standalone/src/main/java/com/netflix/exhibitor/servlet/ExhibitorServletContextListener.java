@@ -149,7 +149,7 @@ public class ExhibitorServletContextListener implements ServletContextListener
 
     private void applyProperties(Map<String, String> argsBuilder, Properties properties)
     {
-        Enumeration parameterNames = properties.propertyNames();
+        Enumeration<?> parameterNames = properties.propertyNames();
         while ( parameterNames.hasMoreElements() )
         {
             String  name = String.valueOf(parameterNames.nextElement());

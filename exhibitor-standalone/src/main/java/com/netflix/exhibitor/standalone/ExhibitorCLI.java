@@ -268,7 +268,6 @@ public class ExhibitorCLI
         }
     }
 
-    @SuppressWarnings("unchecked")
 	private void logOptions(String sectionName, String prefix, Options options)
     {
         if ( sectionName != null )
@@ -310,7 +309,6 @@ public class ExhibitorCLI
         return Joiner.on(", ").join(transformed);
     }
 
-    @SuppressWarnings("unchecked")
 	private void addAll(String sectionName, Options adding)
     {
         //noinspection unchecked

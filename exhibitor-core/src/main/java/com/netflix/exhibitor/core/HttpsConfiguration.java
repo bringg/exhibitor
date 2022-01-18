@@ -1,6 +1,6 @@
 package com.netflix.exhibitor.core;
 
-import com.google.api.client.repackaged.com.google.common.base.Preconditions;
+import com.google.api.client.util.Preconditions;
 
 public class HttpsConfiguration
 {

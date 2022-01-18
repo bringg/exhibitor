@@ -18,7 +18,6 @@ package com.netflix.exhibitor.core.index;
 
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
-import com.google.common.io.Closeables;
 import com.netflix.exhibitor.core.Exhibitor;
 import com.netflix.exhibitor.core.config.StringConfigs;
 import org.apache.curator.utils.CloseableUtils;

@@ -38,7 +38,7 @@ import org.mortbay.thread.ThreadPool;
  * This class wraps a {@link ExecutorService} as a {@link ThreadPool} and
  * {@link LifeCycle} interfaces so that it may be used by the Jetty <code>org.eclipse.jetty.server.Server</code>
  */
-public class ExecutorThreadPool extends AbstractLifeCycle implements ThreadPool, LifeCycle
+public class ExecutorThreadPool extends AbstractLifeCycle implements ThreadPool
 {
     private final ExecutorService _executor;
 
