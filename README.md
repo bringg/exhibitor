@@ -14,8 +14,8 @@ Please see the docs at <https://github.com/soabase/exhibitor/wiki>
 Exhibitor is built via Maven (<https://maven.apache.org>).
 To build do `mvn install`.
 
-- Standalone version can  be built as fat jar with all dependencies. Maven and Gradle build scripts are available [here](https://github.com/bringg/exhibitor/tree/master/exhibitor-standalone/src/main/resources/buildscripts/standalone) and is explain on [standalone build page](https://github.com/soabase/exhibitor/wiki/Building-Exhibitor).
-- War version can be build with Maven script available [here](https://github.com/bringg/exhibitor/tree/master/exhibitor-standalone/src/main/resources/buildscripts/war/maven) and is explain on [war build page](https://github.com/soabase/exhibitor/wiki/Building-A-WAR-File).
+- Standalone version can  be built as fat jar with all dependencies. Maven and Gradle build scripts are available [here](exhibitor-standalone/src/main/resources/buildscripts/standalone) and is explain on [standalone build page](https://github.com/soabase/exhibitor/wiki/Building-Exhibitor).
+- War version can be build with Maven script available [here](exhibitor-standalone/src/main/resources/buildscripts/war/maven) and is explain on [war build page](https://github.com/soabase/exhibitor/wiki/Building-A-WAR-File).
 
 ## ARTIFACTS
 
