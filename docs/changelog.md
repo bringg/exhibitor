@@ -3,6 +3,7 @@
 ## 1.7.4 - January 18, 2022
 
 * [PR 5](https://github.com/bringg/exhibitor/pull/5): Java 11, package upgrades, linter fixes and cleanups.
+* [PR 7](https://github.com/bringg/exhibitor/pull/7): Fix Zookeeper log parser, and drop support for older zk clients.
 
 ## 1.7.3 - January 16, 2022
 
