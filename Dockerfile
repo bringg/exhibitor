@@ -4,7 +4,7 @@ RUN apk add --no-cache git musl-dev \
     && go get -v -u github.com/googlecloudplatform/gcsfuse
 
 # build exhibitor
-FROM maven:3.6-alpine as builder
+FROM maven:3.8-eclipse-temurin-11-alpine as builder
 
 WORKDIR /exhibitor
 COPY . .
@@ -12,7 +12,7 @@ COPY . .
 RUN mvn -B -DskipTests=true install \
     && mvn -B -nsu -f exhibitor-standalone/src/main/resources/buildscripts/standalone/maven/pom.xml package
 
-FROM openjdk:8-jdk-alpine
+FROM eclipse-temurin:11-jdk-alpine
 LABEL maintainer "Bringg DevOps <devops@bringg.com>"
 
 ARG ZK_VERSION="3.6.3"

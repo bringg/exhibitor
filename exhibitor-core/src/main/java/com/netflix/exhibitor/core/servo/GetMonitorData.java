@@ -20,7 +20,6 @@ import com.google.common.collect.Maps;
 import com.netflix.exhibitor.core.Exhibitor;
 import com.netflix.exhibitor.core.activity.Activity;
 import com.netflix.exhibitor.core.state.FourLetterWord;
-import com.netflix.servo.monitor.BasicCounter;
 import java.util.List;
 import java.util.Map;
 

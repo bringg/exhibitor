@@ -16,6 +16,10 @@
 
 package com.netflix.exhibitor.core.rest;
 
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.node.JsonNodeFactory;
+import com.fasterxml.jackson.databind.node.ObjectNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.base.Charsets;
 import com.google.common.collect.Lists;
 import com.google.common.hash.Hashing;
@@ -31,24 +35,20 @@ import com.netflix.exhibitor.core.state.FourLetterWord;
 import com.netflix.exhibitor.core.state.ServerList;
 import com.netflix.exhibitor.core.state.ServerSpec;
 import com.netflix.exhibitor.core.state.UsState;
-import org.codehaus.jackson.JsonNode;
-import org.codehaus.jackson.map.ObjectMapper;
-import org.codehaus.jackson.node.JsonNodeFactory;
-import org.codehaus.jackson.node.ObjectNode;
-import javax.ws.rs.GET;
-import javax.ws.rs.POST;
-import javax.ws.rs.Path;
-import javax.ws.rs.Produces;
+import java.io.IOException;
+import java.util.concurrent.TimeUnit;
+import java.util.Iterator;
+import java.util.List;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.EntityTag;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Request;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.ext.ContextResolver;
-import java.io.IOException;
-import java.util.Iterator;
-import java.util.List;
-import java.util.concurrent.TimeUnit;
+import javax.ws.rs.GET;
+import javax.ws.rs.Path;
+import javax.ws.rs.POST;
+import javax.ws.rs.Produces;
 
 @Path("exhibitor/v1/config")
 public class ConfigResource
@@ -108,7 +108,7 @@ public class ConfigResource
         {
             zooCfgNode.put(fv.getField(), fv.getValue());
         }
-        configNode.put("zooCfgExtra", zooCfgNode);
+        configNode.set("zooCfgExtra", zooCfgNode);
 
         if ( context.getExhibitor().getBackupManager().isActive() )
         {
@@ -120,11 +120,11 @@ public class ConfigResource
                 String value = parser.getValue(c.getKey());
                 backupExtraNode.put(c.getKey(), (value != null) ? value : "");
             }
-            configNode.put("backupExtra", backupExtraNode);
+            configNode.set("backupExtra", backupExtraNode);
         }
 
-        configNode.put("controlPanel", controlPanelNode);
-        mainNode.put("config", configNode);
+        configNode.set("controlPanel", controlPanelNode);
+        mainNode.set("config", configNode);
 
         String      json = JsonUtil.writeValueAsString(mainNode);
         EntityTag   tag = new EntityTag(Hashing.sha1().hashString(json, Charsets.UTF_8).toString());
@@ -239,18 +239,18 @@ public class ConfigResource
     private InstanceConfig parseToConfig(String newConfigJson) throws IOException
     {
         ObjectMapper mapper = new ObjectMapper();
-        final JsonNode tree = mapper.readTree(mapper.getJsonFactory().createJsonParser(newConfigJson));
+        final JsonNode tree = mapper.readTree(mapper.getFactory().createParser(newConfigJson));
 
         String                backupExtraValue = "";
         if ( tree.get("backupExtra") != null )
         {
             List<EncodedConfigParser.FieldValue>    values = Lists.newArrayList();
             JsonNode                backupExtra = tree.get("backupExtra");
-            Iterator<String> fieldNames = backupExtra.getFieldNames();
+            Iterator<String> fieldNames = backupExtra.fieldNames();
             while ( fieldNames.hasNext() )
             {
                 String      name = fieldNames.next();
-                String      value = backupExtra.get(name).getTextValue();
+                String      value = backupExtra.get(name).asText();
                 values.add(new EncodedConfigParser.FieldValue(name, value));
             }
             backupExtraValue = new EncodedConfigParser(values).toEncoded();
@@ -258,11 +258,11 @@ public class ConfigResource
 
         List<EncodedConfigParser.FieldValue>    zooCfgValues = Lists.newArrayList();
         JsonNode                zooCfgExtra = tree.get("zooCfgExtra");
-        Iterator<String>        fieldNames = zooCfgExtra.getFieldNames();
+        Iterator<String>        fieldNames = zooCfgExtra.fieldNames();
         while ( fieldNames.hasNext() )
         {
             String      name = fieldNames.next();
-            String      value = zooCfgExtra.get(name).getTextValue();
+            String      value = zooCfgExtra.get(name).asText();
             zooCfgValues.add(new EncodedConfigParser.FieldValue(name, value));
         }
         final String          zooCfgExtraValue = new EncodedConfigParser(zooCfgValues).toEncoded();
@@ -313,7 +313,7 @@ public class ConfigResource
         };
     }
 
-    static String fixName(Enum c)
+    static String fixName(Enum<?> c)
     {
         StringBuilder   str = new StringBuilder();
         String[]        parts = c.name().toLowerCase().split("_");

@@ -100,7 +100,7 @@ public class PropertyBasedInstanceConfig extends ConfigCollectionBase
     }
 
     @VisibleForTesting
-    public static String toName(Enum e, String prefix)
+    public static String toName(Enum<?> e, String prefix)
     {
         String  s = e.name();
         s = s.replace('_', '-');

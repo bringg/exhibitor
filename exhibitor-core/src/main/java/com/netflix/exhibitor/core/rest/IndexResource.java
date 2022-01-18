@@ -16,6 +16,9 @@
 
 package com.netflix.exhibitor.core.rest;
 
+import com.fasterxml.jackson.databind.node.ArrayNode;
+import com.fasterxml.jackson.databind.node.JsonNodeFactory;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.google.common.base.Function;
 import com.google.common.collect.Collections2;
 import com.google.common.collect.Lists;
@@ -38,23 +41,6 @@ import com.netflix.exhibitor.core.index.IndexProcessorActivity;
 import com.netflix.exhibitor.core.index.LogSearch;
 import com.netflix.exhibitor.core.index.QueryBuilder;
 import com.netflix.exhibitor.core.index.SearchItem;
-import org.apache.lucene.search.Query;
-import org.codehaus.jackson.node.ArrayNode;
-import org.codehaus.jackson.node.JsonNodeFactory;
-import org.codehaus.jackson.node.ObjectNode;
-import javax.ws.rs.Consumes;
-import javax.ws.rs.DELETE;
-import javax.ws.rs.GET;
-import javax.ws.rs.POST;
-import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
-import javax.ws.rs.Produces;
-import javax.ws.rs.QueryParam;
-import javax.ws.rs.core.Context;
-import javax.ws.rs.core.GenericEntity;
-import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response;
-import javax.ws.rs.ext.ContextResolver;
 import java.io.File;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -63,6 +49,20 @@ import java.util.Calendar;
 import java.util.Collection;
 import java.util.Date;
 import java.util.List;
+import javax.ws.rs.Consumes;
+import javax.ws.rs.core.Context;
+import javax.ws.rs.core.GenericEntity;
+import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
+import javax.ws.rs.DELETE;
+import javax.ws.rs.ext.ContextResolver;
+import javax.ws.rs.GET;
+import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
+import javax.ws.rs.POST;
+import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
+import org.apache.lucene.search.Query;
 
 @Path("exhibitor/v1/index")
 public class IndexResource
@@ -194,7 +194,7 @@ public class IndexResource
                     ObjectNode      data = JsonNodeFactory.instance.objectNode();
                     int             docId = cachedSearch.getNthDocId(i);
                     SearchItem      item = logSearch.toResult(docId);
-                    
+
                     data.put("DT_RowId", "index-query-result-" + docId);
                     data.put("0", getTypeName(EntryTypes.getFromId(item.getType())));
                     data.put("1", dateFormatter.format(item.getDate()));
@@ -208,7 +208,7 @@ public class IndexResource
             node.put("sEcho", sEcho);
             node.put("iTotalRecords", logSearch.getDocQty());
             node.put("iTotalDisplayRecords", cachedSearch.getTotalHits());
-            node.put("aaData", dataTab);
+            node.set("aaData", dataTab);
         }
         finally
         {

@@ -19,7 +19,6 @@ package com.netflix.exhibitor.core.config;
 import com.google.common.annotations.VisibleForTesting;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
-import com.google.common.collect.Sets;
 import com.google.common.io.Closeables;
 import com.netflix.exhibitor.core.Exhibitor;
 import com.netflix.exhibitor.core.activity.Activity;
@@ -46,7 +45,7 @@ public class ConfigManager implements Closeable
     private final int maxAttempts;
     private final RepeatingActivity repeatingActivity;
     private final AtomicReference<LoadedInstanceConfig> config = new AtomicReference<LoadedInstanceConfig>();
-    private final Set<ConfigListener> configListeners = Sets.newSetFromMap(Maps.<ConfigListener, Boolean>newConcurrentMap());
+    private final Set<ConfigListener> configListeners = Collections.newSetFromMap(Maps.<ConfigListener, Boolean>newConcurrentMap());
     private final AtomicReference<RollingConfigAdvanceAttempt> rollingConfigAdvanceAttempt = new AtomicReference<RollingConfigAdvanceAttempt>(null);
     private final AtomicInteger waitingForQuorumAttempts = new AtomicInteger(0);
     private final AtomicInteger rollingConfigChangeRestartCount = new AtomicInteger(-1);

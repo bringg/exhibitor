@@ -95,8 +95,11 @@ public class DefaultProperties
                     {
                         return backupExtraValue;
                     }
+
+                    default: {
+                        return "";
+                    }
                 }
-                return "";
             }
 
             @Override
@@ -159,8 +162,10 @@ public class DefaultProperties
                         return 1;
                     }
 
+                    default: {
+                        return 0;
+                    }
                 }
-                return 0;
             }
         };
     }

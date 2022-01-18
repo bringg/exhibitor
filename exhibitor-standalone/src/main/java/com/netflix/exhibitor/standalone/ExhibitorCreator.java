@@ -19,27 +19,29 @@ package com.netflix.exhibitor.standalone;
 import com.google.common.base.Joiner;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
-import com.google.common.net.HostAndPort;
-import com.netflix.exhibitor.core.ExhibitorArguments;
-import com.netflix.exhibitor.core.ExhibitorEnv;
-import com.netflix.exhibitor.core.HttpsConfiguration;
 import com.netflix.exhibitor.core.backup.BackupProvider;
 import com.netflix.exhibitor.core.backup.filesystem.FileSystemBackupProvider;
 import com.netflix.exhibitor.core.backup.s3.S3BackupProvider;
 import com.netflix.exhibitor.core.config.AutoManageLockArguments;
 import com.netflix.exhibitor.core.config.ConfigProvider;
+import com.netflix.exhibitor.core.config.consul.ConsulConfigProvider;
 import com.netflix.exhibitor.core.config.DefaultProperties;
+import com.netflix.exhibitor.core.config.filesystem.FileSystemConfigProvider;
 import com.netflix.exhibitor.core.config.IntConfigs;
 import com.netflix.exhibitor.core.config.JQueryStyle;
-import com.netflix.exhibitor.core.config.PropertyBasedInstanceConfig;
-import com.netflix.exhibitor.core.config.StringConfigs;
-import com.netflix.exhibitor.core.config.consul.ConsulConfigProvider;
-import com.netflix.exhibitor.core.config.filesystem.FileSystemConfigProvider;
 import com.netflix.exhibitor.core.config.none.NoneConfigProvider;
+import com.netflix.exhibitor.core.config.PropertyBasedInstanceConfig;
 import com.netflix.exhibitor.core.config.s3.S3ConfigArguments;
 import com.netflix.exhibitor.core.config.s3.S3ConfigAutoManageLockArguments;
 import com.netflix.exhibitor.core.config.s3.S3ConfigProvider;
+import com.netflix.exhibitor.core.config.StringConfigs;
 import com.netflix.exhibitor.core.config.zookeeper.ZookeeperConfigProvider;
+import com.netflix.exhibitor.core.curator.DefaultExhibitorRestClient;
+import com.netflix.exhibitor.core.curator.ExhibitorEnsembleProvider;
+import com.netflix.exhibitor.core.curator.Exhibitors;
+import com.netflix.exhibitor.core.ExhibitorArguments;
+import com.netflix.exhibitor.core.ExhibitorEnv;
+import com.netflix.exhibitor.core.HttpsConfiguration;
 import com.netflix.exhibitor.core.s3.PropertyBasedS3ClientConfig;
 import com.netflix.exhibitor.core.s3.PropertyBasedS3Credential;
 import com.netflix.exhibitor.core.s3.S3ClientFactoryImpl;
@@ -48,12 +50,9 @@ import com.netflix.servo.jmx.JmxMonitorRegistry;
 import com.orbitz.consul.Consul;
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.CommandLineParser;
+import org.apache.commons.cli.DefaultParser;
 import org.apache.commons.cli.ParseException;
-import org.apache.commons.cli.PosixParser;
 import org.apache.commons.cli.UnrecognizedOptionException;
-import org.apache.curator.ensemble.exhibitor.DefaultExhibitorRestClient;
-import org.apache.curator.ensemble.exhibitor.ExhibitorEnsembleProvider;
-import org.apache.curator.ensemble.exhibitor.Exhibitors;
 import org.apache.curator.framework.CuratorFramework;
 import org.apache.curator.framework.CuratorFrameworkFactory;
 import org.apache.curator.framework.api.ACLProvider;
@@ -72,9 +71,7 @@ import org.mortbay.jetty.security.SecurityHandler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import javax.net.ssl.HostnameVerifier;
 import javax.net.ssl.SSLContext;
-import javax.net.ssl.TrustManager;
 import javax.net.ssl.TrustManagerFactory;
 import java.io.BufferedInputStream;
 import java.io.Closeable;
@@ -116,7 +113,7 @@ public class ExhibitorCreator
         CommandLine commandLine;
         try
         {
-            CommandLineParser parser = new PosixParser();
+            CommandLineParser parser = new DefaultParser();
             commandLine = parser.parse(cli.getOptions(), args);
             if ( commandLine.hasOption('?') || commandLine.hasOption(HELP) || (commandLine.getArgList().size() > 0) )
             {
@@ -274,7 +271,7 @@ public class ExhibitorCreator
     {
         return listenPort;
     }
-    
+
     public String getListenAddress()
     {
         return listenAddress;

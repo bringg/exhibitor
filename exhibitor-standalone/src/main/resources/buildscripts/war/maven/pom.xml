@@ -9,7 +9,7 @@
         <dependency>
             <groupId>io.soabase.exhibitor</groupId>
             <artifactId>exhibitor-standalone</artifactId>
-            <version>1.6.0</version>
+            <version>1.7.3</version>
         </dependency>
     </dependencies>
 

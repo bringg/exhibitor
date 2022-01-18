@@ -22,10 +22,10 @@ import com.netflix.exhibitor.core.activity.ActivityQueue;
 import com.netflix.exhibitor.core.config.ConfigManager;
 import com.netflix.exhibitor.core.state.InstanceStateTypes;
 import com.netflix.exhibitor.core.state.MonitorRunningInstance;
-import jsr166y.ForkJoinPool;
 import org.mockito.Mockito;
 import java.io.Closeable;
 import java.io.IOException;
+import java.util.concurrent.ForkJoinPool;
 
 class MockExhibitorInstance implements Closeable
 {

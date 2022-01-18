@@ -112,14 +112,14 @@ public class StandardProcessOperations implements ProcessOperations
         prepConfigFile(details);
         if ( (javaEnvironmentScript != null) && (javaEnvironmentScript.trim().length() > 0) )
         {
-            File     envFile = new File(details.configDirectory, "java.env");
-            Files.write(javaEnvironmentScript, envFile, Charset.defaultCharset());
+            File envFile = new File(details.configDirectory, "java.env");
+            Files.asCharSink(envFile, Charset.defaultCharset()).write(javaEnvironmentScript);
         }
 
         if ( (log4jProperties != null) && (log4jProperties.trim().length() > 0) )
         {
-            File     log4jFile = new File(details.configDirectory, "log4j.properties");
-            Files.write(log4jProperties, log4jFile, Charset.defaultCharset());
+            File log4jFile = new File(details.configDirectory, "log4j.properties");
+            Files.asCharSink(log4jFile, Charset.defaultCharset()).write(log4jProperties);
         }
 
 
@@ -238,9 +238,6 @@ public class StandardProcessOperations implements ProcessOperations
 
     private void internalKill(String pid, boolean force) throws IOException, InterruptedException
     {
-        Details         details = new Details(exhibitor);
-        File            binDirectory = new File(details.zooKeeperDirectory, "bin");
-        File            zkServerScript = new File(binDirectory, "zkServer.sh");
         ProcessBuilder builder;
         buildZkServerScript("start");
         builder = force ? new ProcessBuilder("kill", "-9", pid) : buildZkServerScript("stop");

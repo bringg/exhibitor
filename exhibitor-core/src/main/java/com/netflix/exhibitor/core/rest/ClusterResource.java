@@ -16,6 +16,10 @@
 
 package com.netflix.exhibitor.core.rest;
 
+import com.fasterxml.jackson.databind.node.ArrayNode;
+import com.fasterxml.jackson.databind.node.JsonNodeFactory;
+import com.fasterxml.jackson.databind.node.ObjectNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.netflix.exhibitor.core.activity.QueueGroups;
 import com.netflix.exhibitor.core.automanage.ClusterStatusTask;
 import com.netflix.exhibitor.core.automanage.RemoteInstanceRequest;
@@ -32,23 +36,19 @@ import com.netflix.exhibitor.core.state.MonitorRunningInstance;
 import com.netflix.exhibitor.core.state.ServerList;
 import com.netflix.exhibitor.core.state.ServerSpec;
 import com.netflix.exhibitor.core.state.StartInstance;
-import org.codehaus.jackson.map.ObjectMapper;
-import org.codehaus.jackson.node.ArrayNode;
-import org.codehaus.jackson.node.JsonNodeFactory;
-import org.codehaus.jackson.node.ObjectNode;
-import javax.ws.rs.GET;
-import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
-import javax.ws.rs.Produces;
+import java.net.URLEncoder;
+import java.util.concurrent.Callable;
+import java.util.List;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.GenericEntity;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriInfo;
 import javax.ws.rs.ext.ContextResolver;
-import java.net.URLEncoder;
-import java.util.List;
-import java.util.concurrent.Callable;
+import javax.ws.rs.GET;
+import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
+import javax.ws.rs.Produces;
 
 @SuppressWarnings("UnusedDeclaration")
 @Path("exhibitor/v1/cluster")
@@ -303,7 +303,7 @@ public class ClusterResource
         {
             // ignore
         }
-        
+
         Result      result;
         if ( type != null )
         {
@@ -336,7 +336,7 @@ public class ClusterResource
         {
             switchesNode.put(UIResource.fixName(type), context.getExhibitor().getControlPanelValues().isSet(type));
         }
-        mainNode.put("switches", switchesNode);
+        mainNode.set("switches", switchesNode);
 
         MonitorRunningInstance  monitorRunningInstance = context.getExhibitor().getMonitorRunningInstance();
         InstanceStateTypes      state = monitorRunningInstance.getCurrentInstanceState();
@@ -362,7 +362,7 @@ public class ClusterResource
         {
             serversNode.add(spec.getHostname());
         }
-        node.put("servers", serversNode);
+        node.set("servers", serversNode);
         node.put("port", config.getInt(IntConfigs.CLIENT_PORT));
 
         return JsonUtil.writeValueAsString(node);
@@ -425,7 +425,7 @@ public class ClusterResource
         ObjectNode          node = JsonNodeFactory.instance.objectNode();
         if ( responseIsJson )
         {
-            node.put("response", mapper.readTree(mapper.getJsonFactory().createJsonParser(remoteResponse)));
+            node.set("response", mapper.readTree(mapper.getFactory().createParser(remoteResponse)));
         }
         else
         {

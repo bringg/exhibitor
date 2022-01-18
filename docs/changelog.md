@@ -1,5 +1,7 @@
 # Changelog
 
+## Unreleased
+
 ## 1.7.3 - January 16, 2022
 
 * First release since forking from [soabase/exhibitor](https://github.com/soabase/exhibitor)

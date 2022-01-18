@@ -23,9 +23,9 @@ import com.google.common.io.Resources;
 import com.netflix.exhibitor.core.backup.BackupConfigSpec;
 import com.netflix.exhibitor.core.config.EncodedConfigParser;
 import com.netflix.exhibitor.core.entities.UITabSpec;
-import org.codehaus.jackson.node.ArrayNode;
-import org.codehaus.jackson.node.JsonNodeFactory;
-import org.codehaus.jackson.node.ObjectNode;
+import com.fasterxml.jackson.databind.node.ArrayNode;
+import com.fasterxml.jackson.databind.node.JsonNodeFactory;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import javax.activation.FileTypeMap;
@@ -277,7 +277,7 @@ public class UIResource
         return builder.build();
     }
 
-    static String fixName(Enum c)
+    static String fixName(Enum<?> c)
     {
         StringBuilder   str = new StringBuilder();
         String[]        parts = c.name().toLowerCase().split("_");

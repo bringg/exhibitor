@@ -16,6 +16,11 @@
 
 package com.netflix.exhibitor.core.rest;
 
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.node.ArrayNode;
+import com.fasterxml.jackson.databind.node.JsonNodeFactory;
+import com.fasterxml.jackson.databind.node.ObjectNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.base.Function;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
@@ -31,28 +36,23 @@ import com.netflix.exhibitor.core.entities.PathAnalysisNode;
 import com.netflix.exhibitor.core.entities.PathAnalysisRequest;
 import com.netflix.exhibitor.core.entities.Result;
 import com.netflix.exhibitor.core.entities.UsageListingRequest;
-import org.apache.curator.utils.CloseableUtils;
-import org.apache.curator.utils.ZKPaths;
-import org.apache.zookeeper.KeeperException;
-import org.apache.zookeeper.data.Stat;
-import org.codehaus.jackson.map.ObjectMapper;
-import org.codehaus.jackson.node.ArrayNode;
-import org.codehaus.jackson.node.JsonNodeFactory;
-import org.codehaus.jackson.node.ObjectNode;
-import org.codehaus.jackson.type.TypeReference;
-import javax.ws.rs.*;
-import javax.ws.rs.core.Context;
-import javax.ws.rs.core.Response;
-import javax.ws.rs.ext.ContextResolver;
 import java.io.PipedInputStream;
 import java.io.PipedOutputStream;
 import java.io.PrintStream;
 import java.lang.reflect.Field;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ExecutorService;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
+import javax.ws.rs.*;
+import javax.ws.rs.core.Context;
+import javax.ws.rs.core.Response;
+import javax.ws.rs.ext.ContextResolver;
+import org.apache.curator.utils.CloseableUtils;
+import org.apache.curator.utils.ZKPaths;
+import org.apache.zookeeper.data.Stat;
+import org.apache.zookeeper.KeeperException;
 
 @Path("exhibitor/v1/explorer")
 public class ExplorerResource
@@ -263,7 +263,7 @@ public class ExplorerResource
     public Response     getUsageListing(@QueryParam("request") String json) throws Exception
     {
         ObjectMapper        mapper = new ObjectMapper();
-        UsageListingRequest usageListingRequest = mapper.getJsonFactory().createJsonParser(json).readValueAs(UsageListingRequest.class);
+        UsageListingRequest usageListingRequest = mapper.getFactory().createParser(json).readValueAs(UsageListingRequest.class);
         return usageListing(usageListingRequest);
     }
 
@@ -325,7 +325,7 @@ public class ExplorerResource
     {
         ObjectMapper                                mapper = new ObjectMapper();
         TypeReference<List<PathAnalysisRequest>>    ref = new TypeReference<List<PathAnalysisRequest>>(){};
-        List<PathAnalysisRequest>                   paths = mapper.getJsonFactory().createJsonParser(json).readValueAs(ref);
+        List<PathAnalysisRequest>                   paths = mapper.getFactory().createParser(json).readValueAs(ref);
         return analyze(paths);
     }
 

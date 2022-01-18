@@ -17,8 +17,6 @@
 package com.netflix.exhibitor.core.rest;
 
 import com.netflix.exhibitor.core.Exhibitor;
-import com.netflix.exhibitor.core.rest.jersey.JerseySupport;
-import com.sun.jersey.api.core.ResourceConfig;
 
 public class UIContext
 {

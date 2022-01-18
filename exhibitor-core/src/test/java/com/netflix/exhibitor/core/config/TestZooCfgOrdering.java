@@ -16,15 +16,15 @@
 
 package com.netflix.exhibitor.core.config;
 
-import com.google.common.io.Files;
 import com.netflix.exhibitor.core.config.none.NoneConfigProvider;
-import org.testng.Assert;
-import org.testng.annotations.Test;
 import java.io.File;
+import java.nio.file.Files;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Properties;
+import org.testng.annotations.Test;
+import org.testng.Assert;
 
 public class TestZooCfgOrdering
 {
@@ -36,7 +36,7 @@ public class TestZooCfgOrdering
             "syncLimit=30\n" +
             "tickTime=2000\n" +
             "aaa=test";
-        File                  tempDirectory = Files.createTempDir();
+        File                  tempDirectory = Files.createTempDirectory(this.getClass().getSimpleName()).toFile();
         ConfigProvider        config = new NoneConfigProvider(tempDirectory.getPath());
 
         Properties properties = new Properties();
