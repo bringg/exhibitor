@@ -1,17 +1,15 @@
 /*
  * Copyright 2012 Netflix, Inc.
  *
- *    Licensed under the Apache License, Version 2.0 (the "License");
- *    you may not use this file except in compliance with the License.
- *    You may obtain a copy of the License at
+ * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except
+ * in compliance with the License. You may obtain a copy of the License at
  *
- *        http://www.apache.org/licenses/LICENSE-2.0
+ * http://www.apache.org/licenses/LICENSE-2.0
  *
- *    Unless required by applicable law or agreed to in writing, software
- *    distributed under the License is distributed on an "AS IS" BASIS,
- *    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *    See the License for the specific language governing permissions and
- *    limitations under the License.
+ * Unless required by applicable law or agreed to in writing, software distributed under the License
+ * is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express
+ * or implied. See the License for the specific language governing permissions and limitations under
+ * the License.
  */
 
 package com.netflix.exhibitor.core.activity;
@@ -21,6 +19,7 @@ import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
 import com.netflix.exhibitor.core.ExhibitorArguments;
+import com.netflix.exhibitor.core.state.ManifestVersion;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import java.io.BufferedReader;
@@ -33,33 +32,34 @@ import java.util.List;
 import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
-public class ActivityLog
-{
-    private final Queue<Message>    queue = new ConcurrentLinkedQueue<Message>();
-    private final int               windowSizeLines;
+public class ActivityLog {
+    private final ManifestVersion manifestVersion = new ManifestVersion();
+    private final Queue<Message> queue = new ConcurrentLinkedQueue<Message>();
+    private final int windowSizeLines;
 
-    private static final Logger     log = LoggerFactory.getLogger(ActivityLog.class);
+    private static final Logger log = LoggerFactory.getLogger(ActivityLog.class);
 
-    private static class Message
-    {
-        final Date      date = new Date();
-        final String    text;
-        final Type      type;
+    private static class Message {
+        final Date date = new Date();
+        final String text;
+        final Type type;
 
-        private Message(String text, Type type)
-        {
+        private Message(String text, Type type) {
             this.text = text;
             this.type = type;
         }
     }
 
+    public String getManifestVersion() {
+        return manifestVersion.getVersion();
+    }
+
     /**
      * @param windowSizeLines max lines to keep in memory
      */
-    public ActivityLog(int windowSizeLines)
-    {
+    public ActivityLog(int windowSizeLines) {
         this.windowSizeLines = windowSizeLines;
-        add(Type.INFO, "Exhibitor started");
+        add(Type.INFO, "Exhibitor started, version: " + getManifestVersion());
     }
 
     /**
@@ -70,99 +70,73 @@ public class ActivityLog
      * @param logDirection display direction
      * @return lines
      */
-    public List<String> toDisplayList(final String separator, ExhibitorArguments.LogDirection logDirection)
-    {
-        Iterable<String> transformed = Iterables.transform
-        (
-            queue,
-            new Function<Message, String>()
-            {
-                public String apply(Message message)
-                {
-                    return message.date + separator + message.type + separator + message.text;
-                }
+    public List<String> toDisplayList(final String separator,
+            ExhibitorArguments.LogDirection logDirection) {
+        Iterable<String> transformed = Iterables.transform(queue, new Function<Message, String>() {
+            public String apply(Message message) {
+                return message.date + separator + message.type + separator + message.text;
             }
-        );
+        });
         ImmutableList<String> list = ImmutableList.copyOf(transformed);
-        return (logDirection == ExhibitorArguments.LogDirection.NATURAL) ? list : Lists.reverse(list);
+        return (logDirection == ExhibitorArguments.LogDirection.NATURAL) ? list
+                : Lists.reverse(list);
     }
 
     /**
      * Supported line types
      */
-    public enum Type
-    {
-        ERROR()
-        {
+    public enum Type {
+        ERROR() {
             @Override
-            protected void log(String message, Throwable exception)
-            {
-                if ( exception != null )
-                {
+            protected void log(String message, Throwable exception) {
+                if (exception != null) {
                     log.error(message, exception);
-                }
-                else
-                {
+                } else {
                     log.error(message);
                 }
             }
 
             @Override
-            protected boolean addToUI()
-            {
+            protected boolean addToUI() {
                 return true;
             }
         },
 
-        INFO()
-        {
+        INFO() {
             @Override
-            protected void log(String message, Throwable exception)
-            {
-                if ( exception != null )
-                {
+            protected void log(String message, Throwable exception) {
+                if (exception != null) {
                     log.info(message, exception);
-                }
-                else
-                {
+                } else {
                     log.info(message);
                 }
             }
 
             @Override
-            protected boolean addToUI()
-            {
+            protected boolean addToUI() {
                 return true;
             }
         },
 
-        DEBUG()
-        {
+        DEBUG() {
             @Override
-            protected void log(String message, Throwable exception)
-            {
-                if ( exception != null )
-                {
+            protected void log(String message, Throwable exception) {
+                if (exception != null) {
                     log.debug(message, exception);
-                }
-                else
-                {
+                } else {
                     log.debug(message);
                 }
             }
 
             @Override
-            protected boolean addToUI()
-            {
+            protected boolean addToUI() {
                 return Boolean.getBoolean("log-debug");
             }
-        }
+        };
 
-        ;
+        protected abstract void log(String message, Throwable exception);
 
-        protected abstract void  log(String message, Throwable exception);
-
-        protected abstract boolean  addToUI();
+        protected abstract boolean addToUI();
     }
 
     /**
@@ -171,8 +145,7 @@ public class ActivityLog
      * @param type message type
      * @param message the messqage
      */
-    public void         add(Type type, String message)
-    {
+    public void add(Type type, String message) {
         add(type, message, null);
     }
 
@@ -183,17 +156,16 @@ public class ActivityLog
      * @param message the messqage
      * @param exception the exception
      */
-    public void         add(Type type, String message, Throwable exception)
-    {
-        String          queueMessage = message;
-        if ( (type == Type.ERROR) && (exception != null) )
-        {
+    public void add(Type type, String message, Throwable exception) {
+        String queueMessage = message;
+        if ((type == Type.ERROR) && (exception != null)) {
             queueMessage += " (" + getExceptionMessage(exception) + ")";
         }
 
-        if ( type.addToUI() )
-        {
-            while ( queue.size() > windowSizeLines )  // NOTE: due to concurrency, this may make the queue shorter than MAX - that's OK (and in some cases longer)
+        if (type.addToUI()) {
+            while (queue.size() > windowSizeLines) // NOTE: due to concurrency, this may make the
+                                                   // queue shorter than MAX - that's OK (and in
+                                                   // some cases longer)
             {
                 queue.remove();
             }
@@ -208,31 +180,24 @@ public class ActivityLog
      * @param exception the exception
      * @return message
      */
-    public static String getExceptionMessage(Throwable exception)
-    {
-        StringWriter        out = new StringWriter();
+    public static String getExceptionMessage(Throwable exception) {
+        StringWriter out = new StringWriter();
         exception.printStackTrace(new PrintWriter(out));
-        BufferedReader      in = new BufferedReader(new StringReader(out.toString()));
-        try
-        {
-            StringBuilder       str = new StringBuilder();
-            for(;;)
-            {
-                String  line = in.readLine();
-                if ( line == null )
-                {
+        BufferedReader in = new BufferedReader(new StringReader(out.toString()));
+        try {
+            StringBuilder str = new StringBuilder();
+            for (;;) {
+                String line = in.readLine();
+                if (line == null) {
                     break;
                 }
-                if ( str.length() > 0 )
-                {
+                if (str.length() > 0) {
                     str.append(", ");
                 }
                 str.append(line);
             }
             return str.toString();
-        }
-        catch ( IOException e )
-        {
+        } catch (IOException e) {
             // ignore
         }
         return "n/a";

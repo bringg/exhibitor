@@ -82,6 +82,8 @@ EOF
     HTTP_PROXY="--s3proxy=/opt/exhibitor/proxy.properties"
 }
 
-mkdir -p "$ZK_DATA_DIR" "$ZK_LOG_DIR"
+# prepare data and log dirs
+mkdir -p {"$ZK_DATA_DIR","$ZK_LOG_DIR"}/version-2
 
-exec java -jar /opt/exhibitor/exhibitor.jar --defaultconfig /opt/exhibitor/defaults.conf --hostname ${HOSTNAME} --port 8181 ${BACKUP_CONFIG} ${HTTP_PROXY} 2>&1
+exec java -jar /opt/exhibitor/exhibitor.jar \
+    --defaultconfig /opt/exhibitor/defaults.conf --hostname ${HOSTNAME} --port 8181 ${BACKUP_CONFIG} ${HTTP_PROXY} 2>&1
