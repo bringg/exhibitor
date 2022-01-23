@@ -1,5 +1,9 @@
 # Changelog
 
+## Unreleased
+
+* [PR 12](https://github.com/bringg/exhibitor/pull/12) Log version in ActivityLog instead of System.out
+
 ## 1.7.4 - January 18, 2022
 
 * [PR 5](https://github.com/bringg/exhibitor/pull/5): Java 11, package upgrades, linter fixes and cleanups.
