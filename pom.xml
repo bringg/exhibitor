@@ -43,7 +43,7 @@
         <jetty-version>6.1.26</jetty-version>
         <lucene-version>3.6.2</lucene-version>
         <metrics-core-version>4.2.7</metrics-core-version>
-        <mockito-version>4.2.0</mockito-version>
+        <mockito-version>4.3.1</mockito-version>
         <servlet-version>4.0.1</servlet-version>
         <servo-version>0.13.2</servo-version>
         <test-ng-version>7.5</test-ng-version>
