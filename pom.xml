@@ -37,7 +37,7 @@
         <embedded-consul-version>2.2.1</embedded-consul-version>
         <googleapi-version>1.35.0</googleapi-version>
         <guava-version>31.0.1-jre</guava-version>
-        <jackson-databind-version>2.13.1</jackson-databind-version>
+        <jackson-databind-version>2.13.3</jackson-databind-version>
         <jax-rs-version>1.1.1</jax-rs-version>
         <jersey-version>1.19.4</jersey-version>
         <jetty-version>6.1.26</jetty-version>
