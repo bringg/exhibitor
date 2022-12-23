@@ -1,7 +1,10 @@
 # build gcsfuse
-FROM golang:1.17-alpine as gcsfuse
+FROM golang:1.19-alpine as gcsfuse
+
+ARG GCSFUSE_VERSION="0.41.9"
+
 RUN apk add --no-cache git musl-dev \
-    && go get -v -u github.com/googlecloudplatform/gcsfuse
+    && go install -v github.com/googlecloudplatform/gcsfuse@v$GCSFUSE_VERSION
 
 # build exhibitor
 FROM maven:3.8-eclipse-temurin-11-alpine as builder
