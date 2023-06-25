@@ -46,7 +46,7 @@
         <mockito-version>5.4.0</mockito-version>
         <servlet-version>4.0.1</servlet-version>
         <servo-version>0.13.2</servo-version>
-        <test-ng-version>7.7.1</test-ng-version>
+        <test-ng-version>7.8.0</test-ng-version>
         <zookeeper-version>3.6.3</zookeeper-version>
     </properties>
 
