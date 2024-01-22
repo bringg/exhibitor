@@ -33,7 +33,7 @@
         <aws-version>1.12.641</aws-version>
         <commons-cli-version>1.6.0</commons-cli-version>
         <consul-version>1.5.3</consul-version>
-        <curator-version>5.5.0</curator-version>
+        <curator-version>5.6.0</curator-version>
         <embedded-consul-version>2.2.1</embedded-consul-version>
         <googleapi-version>2.2.0</googleapi-version>
         <guava-version>33.0.0-jre</guava-version>
