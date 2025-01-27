@@ -35,7 +35,7 @@
         <consul-version>1.5.3</consul-version>
         <curator-version>5.7.1</curator-version>
         <embedded-consul-version>2.2.1</embedded-consul-version>
-        <googleapi-version>2.7.0</googleapi-version>
+        <googleapi-version>2.7.2</googleapi-version>
         <guava-version>33.4.0-jre</guava-version>
         <jackson-databind-version>2.17.2</jackson-databind-version>
         <jax-rs-version>1.1.1</jax-rs-version>
